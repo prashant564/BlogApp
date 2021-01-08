@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 import { Context } from '../context/BlogContext';
 
 const EditBlogScreen = ({ navigation }) => {
-  const { state } = useContext(Context);
-
+  const { state, editBlogPost } = useContext(Context);
+  const id = navigation.getParam('id');
   const post = state.find((post) => post.id === navigation.getParam('id'));
 
   const [title, setTitle] = useState(post.title);
@@ -24,7 +24,7 @@ const EditBlogScreen = ({ navigation }) => {
         value={content}
         onChangeText={text => setContent(text)}
       />
-      <Button title="Save Blog Post" onPress={() => navigation.navigate('Index')} />
+      <Button title="Save Blog Post" onPress={() => editBlogPost(id, title, content, () => navigation.pop())} />
     </View>
   );
 };
