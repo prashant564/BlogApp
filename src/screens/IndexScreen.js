@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { View, StyleSheet, Text, FlatList, Button, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Button, TouchableOpacity, Platform } from 'react-native';
 import { Context } from '../context/BlogContext';
 import { AntDesign } from '@expo/vector-icons'; 
 import * as Location from 'expo-location'; 
@@ -33,6 +33,13 @@ const IndexScreen = ({ navigation }) => {
         };
     }, [])
 
+    let text = 'Waiting..';
+    if (errorMsg) {
+        text = errorMsg;
+    } else if (location) {
+        text = JSON.stringify(location);
+    }
+
     return (
         <View>
             <Button title="Add Post" onPress={addBlogPost} />
@@ -44,6 +51,7 @@ const IndexScreen = ({ navigation }) => {
                         <TouchableOpacity onPress={() => {navigation.navigate('Show', {id: item.id})}}>
                             <View style={styles.row}>
                                 <Text style={styles.title}>{item.title} - {item.id}</Text>
+                                <Text style={styles.title}>{`Lat: ${location.coords.latitude}, Long:  ${location.coords.longitude}`}</Text>
                                 <TouchableOpacity onPress={ () => deleteBlogPost(item.id) }>
                                     <AntDesign  name="delete" style={styles.icon}/>
                                 </TouchableOpacity>
